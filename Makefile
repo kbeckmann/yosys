@@ -305,17 +305,17 @@ ifeq ($(ENABLE_PYOSYS),1)
 #Detect name of boost_python library. Some distros usbe boost_python-py<version>, other boost_python<version>, some only use the major version number, some a concatenation of major and minor version numbers
 ifeq ($(OS), Darwin)
 BOOST_PYTHON_LIB ?= $(shell \
-	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null $(shell $(PYTHON_EXECUTABLE)-config --ldflags) -lboost_python-py$(subst .,,$(PYTHON_VERSION)) - > /dev/null 2>&1;        then echo "-lboost_python-py$(subst .,,$(PYTHON_VERSION))";       else \
-	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null $(shell $(PYTHON_EXECUTABLE)-config --ldflags) -lboost_python-py$(subst .,,$(PYTHON_MAJOR_VERSION)) - > /dev/null 2>&1;  then echo "-lboost_python-py$(subst .,,$(PYTHON_MAJOR_VERSION))"; else \
-	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null $(shell $(PYTHON_EXECUTABLE)-config --ldflags) -lboost_python$(subst .,,$(PYTHON_VERSION)) - > /dev/null 2>&1;           then echo "-lboost_python$(subst .,,$(PYTHON_VERSION))";          else \
-	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null $(shell $(PYTHON_EXECUTABLE)-config --ldflags) -lboost_python$(subst .,,$(PYTHON_MAJOR_VERSION)) - > /dev/null 2>&1;     then echo "-lboost_python$(subst .,,$(PYTHON_MAJOR_VERSION))";    else \
+	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null $(shell $(PYTHON_EXECUTABLE)-config --ldflags --embed) -lboost_python-py$(subst .,,$(PYTHON_VERSION)) - > /dev/null 2>&1;        then echo "-lboost_python-py$(subst .,,$(PYTHON_VERSION))";       else \
+	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null $(shell $(PYTHON_EXECUTABLE)-config --ldflags --embed) -lboost_python-py$(subst .,,$(PYTHON_MAJOR_VERSION)) - > /dev/null 2>&1;  then echo "-lboost_python-py$(subst .,,$(PYTHON_MAJOR_VERSION))"; else \
+	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null $(shell $(PYTHON_EXECUTABLE)-config --ldflags --embed) -lboost_python$(subst .,,$(PYTHON_VERSION)) - > /dev/null 2>&1;           then echo "-lboost_python$(subst .,,$(PYTHON_VERSION))";          else \
+	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null $(shell $(PYTHON_EXECUTABLE)-config --ldflags --embed) -lboost_python$(subst .,,$(PYTHON_MAJOR_VERSION)) - > /dev/null 2>&1;     then echo "-lboost_python$(subst .,,$(PYTHON_MAJOR_VERSION))";    else \
                                                                                                                                                                                         echo ""; fi; fi; fi; fi;)
 else
 BOOST_PYTHON_LIB ?= $(shell \
-	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null `$(PYTHON_EXECUTABLE)-config --libs` -lboost_python-py$(subst .,,$(PYTHON_VERSION)) - > /dev/null 2>&1;        then echo "-lboost_python-py$(subst .,,$(PYTHON_VERSION))";       else \
-	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null `$(PYTHON_EXECUTABLE)-config --libs` -lboost_python-py$(subst .,,$(PYTHON_MAJOR_VERSION)) - > /dev/null 2>&1;  then echo "-lboost_python-py$(subst .,,$(PYTHON_MAJOR_VERSION))"; else \
-	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null `$(PYTHON_EXECUTABLE)-config --libs` -lboost_python$(subst .,,$(PYTHON_VERSION)) - > /dev/null 2>&1;           then echo "-lboost_python$(subst .,,$(PYTHON_VERSION))";          else \
-	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null `$(PYTHON_EXECUTABLE)-config --libs` -lboost_python$(subst .,,$(PYTHON_MAJOR_VERSION)) - > /dev/null 2>&1;     then echo "-lboost_python$(subst .,,$(PYTHON_MAJOR_VERSION))";    else \
+	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null `$(PYTHON_EXECUTABLE)-config --libs --embed` -lboost_python-py$(subst .,,$(PYTHON_VERSION)) - > /dev/null 2>&1;        then echo "-lboost_python-py$(subst .,,$(PYTHON_VERSION))";       else \
+	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null `$(PYTHON_EXECUTABLE)-config --libs --embed` -lboost_python-py$(subst .,,$(PYTHON_MAJOR_VERSION)) - > /dev/null 2>&1;  then echo "-lboost_python-py$(subst .,,$(PYTHON_MAJOR_VERSION))"; else \
+	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null `$(PYTHON_EXECUTABLE)-config --libs --embed` -lboost_python$(subst .,,$(PYTHON_VERSION)) - > /dev/null 2>&1;           then echo "-lboost_python$(subst .,,$(PYTHON_VERSION))";          else \
+	if echo "int main(int argc, char ** argv) {return 0;}" | $(CXX) -xc -o /dev/null `$(PYTHON_EXECUTABLE)-config --libs --embed` -lboost_python$(subst .,,$(PYTHON_MAJOR_VERSION)) - > /dev/null 2>&1;     then echo "-lboost_python$(subst .,,$(PYTHON_MAJOR_VERSION))";    else \
                                                                                                                                                                                         echo ""; fi; fi; fi; fi;)
 endif
 
@@ -325,18 +325,18 @@ endif
 
 ifeq ($(OS), Darwin)
 ifeq ($(PYTHON_MAJOR_VERSION),3)
-LDLIBS += $(shell $(PYTHON_EXECUTABLE)-config --ldflags) $(BOOST_PYTHON_LIB) -lboost_system -lboost_filesystem
+LDLIBS += $(shell $(PYTHON_EXECUTABLE)-config --ldflags --embed) $(BOOST_PYTHON_LIB) -lboost_system -lboost_filesystem
 CXXFLAGS += $(shell $(PYTHON_EXECUTABLE)-config --includes) -DWITH_PYTHON
 else
-LDLIBS += $(shell $(PYTHON_EXECUTABLE)-config --ldflags) $(BOOST_PYTHON_LIB) -lboost_system -lboost_filesystem
+LDLIBS += $(shell $(PYTHON_EXECUTABLE)-config --ldflags --embed) $(BOOST_PYTHON_LIB) -lboost_system -lboost_filesystem
 CXXFLAGS += $(shell $(PYTHON_EXECUTABLE)-config --includes) -DWITH_PYTHON
 endif
 else
 ifeq ($(PYTHON_MAJOR_VERSION),3)
-LDLIBS += $(shell $(PYTHON_EXECUTABLE)-config --libs) $(BOOST_PYTHON_LIB) -lboost_system -lboost_filesystem
+LDLIBS += $(shell $(PYTHON_EXECUTABLE)-config --libs --embed) $(BOOST_PYTHON_LIB) -lboost_system -lboost_filesystem
 CXXFLAGS += $(shell $(PYTHON_EXECUTABLE)-config --includes) -DWITH_PYTHON
 else
-LDLIBS += $(shell $(PYTHON_EXECUTABLE)-config --libs) $(BOOST_PYTHON_LIB) -lboost_system -lboost_filesystem
+LDLIBS += $(shell $(PYTHON_EXECUTABLE)-config --libs --embed) $(BOOST_PYTHON_LIB) -lboost_system -lboost_filesystem
 CXXFLAGS += $(shell $(PYTHON_EXECUTABLE)-config --includes) -DWITH_PYTHON
 endif
 endif
